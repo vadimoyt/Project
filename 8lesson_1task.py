@@ -25,4 +25,4 @@ while True:
         print('Ошибка индексации. Введите параметры заново')
     except ZeroDivisionError:
         print('Некорректные данные, попробуйте заново')
-
+print()
