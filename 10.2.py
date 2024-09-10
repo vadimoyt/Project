@@ -1,21 +1,28 @@
-from turtledemo.nim import NimView
+from curses.ascii import isdigit
 
 
-class Soda:
+class Math():
 
-    def __init__(self, kind=None):
-        self.kind = kind
+    def addition(self, x, y):
+        return float(x + y)
 
-    def dispaly_info(self):
-        if self.kind:
-            print(f"У вас газировка с {self.kind} вкусом")
-        else:
-                print("У вас обычная газировка")
+    def subtraction(self, x, y):
+        return x - y
 
+    def multiplication(self, x, y):
+        return float(x * y)
 
-banana_soda = Soda()
-banana_soda.dispaly_info()
+    def division(self, x, y):
+        return x / y
 
-banana_soda = Soda(kind="банановым")
-banana_soda.dispaly_info()
+try:
+    result = Math()
+    print('Результат деления - ', result.division(4, 2))
+    print('Результат сложения - ', result.addition(4, 2))
+    print('Результат вычитания - ', result.subtraction(4, 2))
+    print('Результат умножения - ', result.multiplication(4, 2))
 
+except TypeError:
+    print('Невозможно выполнить действие')
+except ValueError:
+    print('Оба значения должны быть цифрами')
