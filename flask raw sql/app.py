@@ -1,6 +1,7 @@
 from webbrowser import Error
-
-from flask import Flask, render_template, request, url_for, redirect
+import os
+from flask import Flask, render_template, request, url_for, redirect, send_from_directory
+from werkzeug.utils import secure_filename
 
 from db import Database
 from db_connection import DB_CONNECTION
@@ -8,6 +9,9 @@ from db_connection import DB_CONNECTION
 db = Database(**DB_CONNECTION)
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def home_page():
@@ -39,12 +43,19 @@ def add_task():
             selected_description = request.form.get('description')
             selected_status = request.form.get('status')
             selected_dead_line = request.form.get('dead_line')
+            selected_file = request.files.get('file')
+            file_path = None
+            if selected_file:
+                file_name = secure_filename(selected_file.filename)
+                selected_file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+                file_path = file_name
+
             add_student = """
-            insert into tasks (category, title, description, status, dead_line) 
-            values (%s, %s, %s, %s, %s)
+            insert into tasks (category, title, description, status, dead_line, file_path) 
+            values (%s, %s, %s, %s, %s, %s)
             """
             with db.get_cursor() as cursor:
-                cursor.execute(add_student, (selected_category, selected_title, selected_description, selected_status, selected_dead_line))
+                cursor.execute(add_student, (selected_category, selected_title, selected_description, selected_status, selected_dead_line, file_path))
             return redirect(url_for('success'))
         except Error as e:
             return f"Error, {e}"
@@ -102,6 +113,9 @@ def update_task_field():
     task_id = request.args.get('id')
     return render_template('/update_task_field.html', field_name=field_name, id=task_id)
 
+@app.route('/uploads/<file_name>')
+def uploaded_file(file_name):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], file_name, as_attachment=True)
 
 
 
