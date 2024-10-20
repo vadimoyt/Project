@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>All tasks</title>
+</head>
+<body>
+    <h1>List of tasks</h1>
+    <ul>
+        {% for task in tasks %}
+        <li>
+            <strong>Category</strong> {{ task[1] }} <br>
+            <strong>Name</strong> {{ task[2] }} <br>
+            <strong>Description</strong> {{ task[3] }} <br>
+            <strong>Status</strong> {{ task[4] }} <br>
+            <strong>Date of creation</strong> {{ task[5] }} <br>
+            <strong>Dead line</strong> {{ task[6] if task[5] else "Dead line not added" }}
+            <form action="/delete" method="POST">
+                <input type="hidden" name="task_id" value="{{ task[0] }}">
+                <button type="submit">Delete</button>
+            </form>
+            <form action="/update_task" method="GET">
+                <input type="hidden" name="task_id" value="{{ task[0] }}">
+                <button type="submit">Update</button>
+            </form>
+            <form action="/task" method="GET">
+                <input type="hidden" name="task_id" value="{{ task[0] }}">
+                <button type="submit">Open task</button>
+            </form>
+            <br><br>
+        </li>
+        {% endfor %}
+
+    </ul>
+    <form method="GET" action="/sorted">
+    <label for="category">Choose category</label>
+        <select name="category" id="category">
+            <option value="">All</option>
+            <option value="Programming">Programming</option>
+            <option value="Health">Health</option>
+        </select>
+        <button type="submit">Sort</button>
+    </form>
+    <form method="GET" action="/add_task">
+        <button type="submit">Add task</button>
+    </form>
+</body>
+</html>
