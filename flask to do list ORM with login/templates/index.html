@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>All tasks</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .column {
+            width: 30%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        h2 {
+            text-align: center;
+        }
+        .auth-buttons {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .auth-buttons button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>List of tasks</h1>
+    {% if user_name %}
+    <div>
+        <h1>Welcome, {{ user_name }}!</h1>
+    </div>
+    {% endif %}
+    <div class="auth-buttons">
+        {% if not user_name %}
+        <form method="GET" action="/login" style="display: inline;">
+            <button type="submit">Войти</button>
+        </form>
+        <form method="GET" action="/register" style="display: inline;">
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+        {% endif %}
+        {% if user_name %}
+        <form method="GET" action="/logout" style="display: inline;">
+            <button type="submit">Выйти</button>
+        </form>
+        {% endif %}
+    </div>
+
+    <div class="container">
+        <div class="column">
+            <h2>To Do</h2>
+            <ul>
+                {% for task in tasks %}
+                {% if task.status == 'to do' %}
+                <li>
+                    <strong>Category:</strong> {{ task.category }} <br>
+                    <strong>Name:</strong> {{ task.title }} <br>
+                    <strong>Description:</strong> {{ task.description }} <br>
+                    <strong>Status:</strong> {{ task.status }} <br>
+                    <strong>Date of creation:</strong> {{ task.created_at }} <br>
+                    <strong>Dead line:</strong> {{ task.dead_line if task.dead_line else "Dead line not added" }} <br>
+                    {% if task.file_path %}
+                    <a href="{{ url_for('uploaded_file', file_name=task.file_path) }}">Download file</a>
+                    {% endif %}
+                    <br><br>
+                    <form action="/delete" method="POST">
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                    <form action="/update_task" method="GET">
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <button type="submit">Update</button>
+                    </form>
+                    <form action="/task" method="GET">
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <button type="submit">Open task</button>
+                    </form>
+                    <br>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="column">
+            <h2>In Progress</h2>
+            <ul>
+                {% for task in tasks %}
+                {% if task.status == 'in progress' %}
+                <li>
+                    <strong>Category:</strong> {{ task.category }} <br>
+                    <strong>Name:</strong> {{ task.title }} <br>
+                    <strong>Description:</strong> {{ task.description }} <br>
+                    <strong>Status:</strong> {{ task.status }} <br>
+                    <strong>Date of creation:</strong> {{ task.created_at }} <br>
+                    <strong>Dead line:</strong> {{ task.dead_line if task.dead_line else "Dead line not added" }} <br>
+                    {% if task.file_path %}
+                    <a href="{{ url_for('uploaded_file', file_name=task.file_path) }}">Download file</a>
+                    {% endif %}
+                    <br><br>
+                    <form action="/delete" method="POST">
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                    <form action="/update_task" method="GET">
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <button type="submit">Update</button>
+                    </form>
+                    <form action="/task" method="GET">
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <button type="submit">Open task</button>
+                    </form>
+                    <br>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="column">
+            <h2>Done</h2>
+            <ul>
+                {% for task in tasks %}
+                {% if task.status == 'done' %}
+                <li>
+                    <strong>Category:</strong> {{ task.category }} <br>
+                    <strong>Name:</strong> {{ task.title }} <br>
+                    <strong>Description:</strong> {{ task.description }} <br>
+                    <strong>Status:</strong> {{ task.status }} <br>
+                    <strong>Date of creation:</strong> {{ task.created_at }} <br>
+                    <strong>Dead line:</strong> {{ task.dead_line if task.dead_line else "Dead line not added" }} <br>
+                    {% if task.file_path %}
+                    <a href="{{ url_for('uploaded_file', file_name=task.file_path) }}">Download file</a>
+                    {% endif %}
+                    <br><br>
+                    <form action="/delete" method="POST">
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                    <form action="/update_task" method="GET">
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <button type="submit">Update</button>
+                    </form>
+                    <form action="/task" method="GET">
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <button type="submit">Open task</button>
+                    </form>
+                    <br>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <form method="GET" action="/sorted">
+        <label for="category">Choose category</label>
+        <select name="category" id="category">
+            <option value="">All</option>
+            <option value="Programming">Programming</option>
+            <option value="Health">Health</option>
+            <option value="Relationship">Relationship</option>
+        </select>
+        <button type="submit">Sort</button>
+    </form>
+    <form method="GET" action="/add_task">
+        <button type="submit">Add task</button>
+    </form>
+</body>
+</html>

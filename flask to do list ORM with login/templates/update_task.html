@@ -1,0 +1,54 @@
+{% extends 'task.html' %}
+{% block content %}
+<style>
+    .inline-button {
+        display: inline;
+        margin-left: 10px;
+    }
+    .task-item {
+        margin-bottom: 15px;
+    }
+</style>
+<ul>
+  <li>
+    <strong>Category</strong> {{ task.category }}
+    <form method="get" action="/update_task_field" style="display: inline;">
+        <input type="hidden" name="id" value="{{ task.id }}">
+        <input type="hidden" name="field" value="category">
+        <button class="inline-button" type="submit">Change</button>
+    </form>
+    <br>
+    <strong>Name</strong> {{ task.title }}
+     <form method="get" action="/update_task_field" style="display: inline;">
+        <input type="hidden" name="id" value="{{ task.id }}">
+        <input type="hidden" name="field" value="name">
+        <button class="inline-button" type="submit">Change</button>
+    </form>
+    <br>
+    <strong>Description</strong> {{ task.description }}
+     <form method="get" action="/update_task_field" style="display: inline;">
+         <input type="hidden" name="id" value="{{ task.id }}">
+         <input type="hidden" name="field" value="description">
+         <button class="inline-button" type="submit">Change</button>
+    </form>
+    <br>
+    <strong>Status</strong> {{ task.status }}
+     <form method="get" action="/update_task_field" style="display: inline;">
+         <input type="hidden" name="id" value="{{ task.id }}">
+         <input type="hidden" name="field" value="status">
+         <button class="inline-button" type="submit">Change</button>
+    </form>
+    <br>
+    <strong>Dead line</strong> {{ task.dead_line if task.dead_line else "Dead line not added" }}
+     <form method="get" action="/update_task_field" style="display: inline;">
+         <input type="hidden" name="id" value="{{ task.id }}">
+         <input type="hidden" name="field" value="dead_line">
+         <button class="inline-button" type="submit">Change</button>
+    </form>
+      <form method="get" action="/">
+    <button type="submit">On main page</button>
+  </form>
+    <br><br>
+  </li>
+</ul>
+{% endblock %}
