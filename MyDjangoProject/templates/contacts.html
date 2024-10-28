@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+
+{% block header %}
+    <h1>Мой Блог</h1>
+    <p>Добро пожаловать! Здесь я делюсь своими мыслями и опытом.</p>
+{% endblock %}
+{% block content %}
+  <div class="container">
+        <div class="post">
+            <h2>Контакты</h2>
+            <p>Телефон: +375 (29) 347-52-21</p>
+            <p>LinkedIn:
+    <a href="https://www.linkedin.com/in/vadim-raidziuk-45724a32b/" class="post-button">
+        <button class="header-button">Перейти в профиль</button>
+    </a>
+</p>
+          <p>Instagram:
+    <a href="https://www.instagram.com/vadim.raidiuk/" class="post-button">
+        <button class="header-button">Перейти в профиль</button>
+    </a>
+</p>
+            <a href="{% url 'main_page' %}" class="post-button"><button class="post-button">Вернуться на главную</button></a>
+        </div>
+{% endblock %}

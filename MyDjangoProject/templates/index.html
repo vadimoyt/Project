@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Блог</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<header>
+    {% block header %}
+    <h1>Мой Блог</h1>
+    <p>Добро пожаловать! Здесь я делюсь своими мыслями и опытом.</p>
+    <a href="{% url 'contacts' %}" class="post-button"><button class="header-button">Контакты</button></a>
+    <a href="{% url 'contacts' %}" class="post-button"><button class="header-button">Контакты</button></a>
+    {% endblock %}
+</header>
+{% block content %}
+<form method="POST" action="{% url 'article' %}">
+    <div class="container">
+        {% csrf_token %}
+        {% for article in articles %}
+        <div class="post">
+            <h2>Тема {{ article.title }}</h2>
+            <p>Дата: {{ article.created_at }}</p>
+            <p>Описание: {{ article.content|truncatechars:50 }}</p>
+            <input type="hidden" name="article_id" value="{{ article.id }}">
+            <button class="post-button">Читать далее</button>
+        </div>
+        {% endfor %}
+        <div class="about">
+            <h2>Обо мне</h2>
+            <p>Привет! Меня зовут Вадим, и я начинающий Python-разработчик. На этом блоге я делюсь своим опытом и знаниями.</p>
+        </div>
+    </div>
+</form>
+{% endblock %}
+<footer>
+    <p>&copy; 2024 Вадим. Все права защищены.</p>
+</footer>
+
+</body>
+</html>

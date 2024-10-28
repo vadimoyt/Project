@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+
+{% block content %}
+  <div class="container">
+        <div class="post">
+            <h2>Тема {{ article.title }}</h2>
+            <p>Дата: {{ article.created_at }}</p>
+            <p>Описание: {{ article.content }}</p>
+            <input type="hidden" name="article_id" value="{{ article.id }}">
+            <a href="{% url 'main_page' %}" class="post-button"><button class="post-button">Вернуться на главную</button></a>
+        </div>
+{% endblock %}
