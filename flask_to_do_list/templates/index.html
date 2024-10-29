@@ -1,4 +1,6 @@
+
 <!doctype html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,21 +8,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>All tasks</title>
-    <style>
-        .container {
-            display: flex;
-            justify-content: space-between;
-        }
-        .column {
-            width: 30%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        h2 {
-            text-align: center;
-        }
-    </style>
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <h1>List of tasks</h1>

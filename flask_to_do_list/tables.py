@@ -12,7 +12,8 @@ db.get_cursor().execute(
     "description text,"
     "status varchar(50) default 'todo',"
     "created_at timestamp default current_timestamp,"
-    "dead_line timestamp)"
+    "dead_line timestamp,"
+    "file_path varchar(255))"
 )
 db.get_cursor().execute(
     "insert into tasks (title, category, description, dead_line) values ('Running', 'Health', 'Run 5 km', '2024-12-25')"
