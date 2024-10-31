@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Недвижимость | Главная</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+{% if user.is_authenticated %}
+    <p>Добро пожаловать, {{ user.username }}!</p>
+{% else %}
+    <p>Пожалуйста, <a href="{% url 'login' %}">войдите</a> для доступа к этому контенту.</p>
+{% endif %}
+    <header>
+        <div class="navbar">
+        {% if not user.is_authenticated %}
+        <a href="{% url 'login' %}">Войти</a>
+        <a href="{% url 'register' %}">Зарегистрироваться</a>
+        {% else %}
+        <a href="{% url 'logout' %}">Выйти</a>
+        {% endif %}
+        </div>
+        <div class="container">
+            <h1>Найди свою идеальную недвижимость</h1>
+            <nav>
+                <ul>
+                    <li><a href="#">Главная</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'creation' %}">Добавить дом</a></li>
+                        <li><a href="{% url 'my_catalog' user.id %}">Мои объекты</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="centered-title">
+            <h2>Лучшие предложения месяца</h2>
+            <p>Найдите свой новый дом или квартиру по доступной цене.</p>
+        </div>
+        <section class="properties">
+            {% for building in buildings %}
+            <div class="property">
+                <img src='{{ building.image_path }}' alt="{{ building.title }}">
+                <h3>{{ building.title }}</h3>
+                {% if user.is_authenticated %}
+                    <p>{{ building.price }} $</p>
+                {% else %}
+                    <p>Цену могут видеть только авторизованные пользователи</p>
+                {% endif %}
+                <a href="{% url 'building' building.id %}" class="btn">Подробнее</a>
+            </div>
+            {% endfor %}
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Недвижимость. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

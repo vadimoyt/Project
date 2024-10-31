@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои объекты</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+<header>
+    <div class="navbar">
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Выйти</a>
+        {% endif %}
+        </div>
+    <div class="container">
+        <h1>Мой каталог</h1>
+        <div class="container">
+            <nav>
+                <ul>
+                     <li><a href="{% url 'index' %}">Главная</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'creation' %}">Добавить дом</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="centered-title">
+        <p>Идеальный дом для жизни и отдыха</p>
+    </div>
+</div>
+    </div>
+
+    <section class="properties">
+            {% if not buildings %}
+            <h1>У вас пока нет своих объектов</h1>
+            {% endif %}
+            {% for building in buildings %}
+            <div class="property">
+                <img src='{{ building.image_path.url }}' alt="{{ building.title }}">
+                <h3>{{ building.title }}</h3>
+                {% if user.is_authenticated %}
+                    <p>{{ building.price }} $</p>
+                {% else %}
+                    <p>Цену могут видеть только авторизованные пользователи</p>
+                {% endif %}
+                <a href="{% url 'building' building.id %}" class="btn">Подробнее</a>
+                <form method="POST" action="{% url 'delete' building.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Удалить</button>
+                </form>
+            </div>
+            {% endfor %}
+        </section>
+<footer id="contact">
+    <div class="container">
+        <p>&copy; 2024 Продажа недвижимости. Все права защищены.</p>
+        <p>Контактная информация: info@yourdomain.com</p>
+    </div>
+</footer>
+
+</body>
+</html>
