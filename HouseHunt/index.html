@@ -41,7 +41,7 @@
             <p>Найдите свой новый дом или квартиру по доступной цене.</p>
         </div>
         <section class="properties">
-            {% for building in buildings %}
+            {% for building in page_obj %}
             <div class="property">
                 <img src='{{ building.image_path }}' alt="{{ building.title }}">
                 <h3>{{ building.title }}</h3>
@@ -54,6 +54,23 @@
             </div>
             {% endfor %}
         </section>
+        <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; Первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+        {% endif %}
+    </span>
+</div>
     </main>
     <footer>
         <div class="container">

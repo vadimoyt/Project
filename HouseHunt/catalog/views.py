@@ -1,11 +1,17 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
+from urllib3 import request
+
 from catalog.forms import BuildingForm
 from catalog.models import Building
 
 
-def index(requesrt):
+def index(request):
     buildings = Building.objects.all()
-    return render(requesrt, 'index.html', {'buildings':buildings})
+    paginator = Paginator(buildings,10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'index.html', {'page_obj':page_obj})
 
 def building(request, id):
     building = get_object_or_404(Building, id=id)

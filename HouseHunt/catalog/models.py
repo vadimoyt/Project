@@ -11,5 +11,5 @@ class Building(models.Model):
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=False)
 
     def __str__(self):
-        return self.title
+        return f"{self.title}, {self.price}, {self.description[:20]}, {self.image_path}, {self.user_id}"
 
