@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 Доступ запрещён</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>403 Доступ запрещён</h1>
+    <p>У вас нет прав для доступа к этой странице.</p>
+    <p>Пожалуйста, вернитесь на <a href="{% url 'index' %}">главную страницу</a> или свяжитесь с администратором, если считаете, что это ошибка.</p>
+</body>
+</html>

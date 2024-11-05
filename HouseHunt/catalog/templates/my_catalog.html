@@ -54,6 +54,10 @@
                 {% csrf_token %}
                 <button type="submit">Удалить</button>
                 </form>
+                <form method="POST" action="{% url 'change_data' building.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Редактировать</button>
+                </form>
             </div>
             {% endfor %}
         </section>
