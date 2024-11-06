@@ -17,7 +17,7 @@
         {% else %}
         <a href="{% url 'logout' %}">Выйти</a>
         {% endif %}
-        </div>
+    </div>
     <div class="container">
         <h1>Продается {{ building.title|lower }}</h1>
         <nav class="navbar">
@@ -27,34 +27,43 @@
         </nav>
     </div>
 </header>
+
 <div class="container">
     <div class="centered-title">
         <p>Идеальный дом для жизни и отдыха</p>
     </div>
 
     <div class="properties">
-    <div class="property">
-    <img src='{{ building.image_path.url }}' alt="{{ building.title }}">
-</div>
-</div>
+        <div class="property">
+            <img src="{{ building.image_path.url }}" alt="{{ building.title }}">
+        </div>
+
+        <div class="property-details">
+            <h3>Основные параметры:</h3>
+            <ul>
+                <li><strong>Тип недвижимости:</strong> {{ building.type_of_building.type_of_building }}</li>
+                <li><strong>Год постройки:</strong> {{ building.year_of_construction }}</li>
+                <li><strong>Площадь (м2):</strong> {{ building.square }}</li>
+                {% if user.is_authenticated %}
+                <li><strong>Цена:</strong> {{ building.price }} $</li>
+                {% else %}
+                <li><strong>Цена:</strong> доступно для авторизованных пользователей</li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 
     <div class="centered-title" id="features">
         <h2>Описание дома</h2>
         <p>Все удобства для комфортной жизни</p>
-        {% if user.is_authenticated %}
-        <p>{{ building.price }} $</p>
-        {% else %}
-        <p>Цену могут видеть только авторизованные пользователи</p>
-        {% endif %}
     </div>
 
     <ul class="building-description">
-    {% if user.is_authenticated %}
-    <li>{{ building.description }}</li>
-    {% else %}
-    <li>Описание доступно для авторизованных пользователей</li>
-    {% endif %}
+        {% if user.is_authenticated %}
+        <li>{{ building.description }}</li>
+        {% else %}
+        <li>Описание доступно для авторизованных пользователей</li>
+        {% endif %}
     </ul>
 </div>
 
