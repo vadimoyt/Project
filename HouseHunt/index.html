@@ -36,42 +36,56 @@
         </div>
     </header>
     <main>
-        <div class="centered-title">
-            <h2>Лучшие предложения месяца</h2>
-            <p>Найдите свой новый дом или квартиру по доступной цене.</p>
-        </div>
-        <section class="properties">
-            {% for building in page_obj %}
-            <div class="property">
-                <img src='{{ building.image_path }}' alt="{{ building.title }}">
-                <h3>{{ building.title }}</h3>
-                {% if user.is_authenticated %}
-                    <p>{{ building.price }} $</p>
-                {% else %}
-                    <p>Цену могут видеть только авторизованные пользователи</p>
-                {% endif %}
-                <a href="{% url 'building' building.id %}" class="btn">Подробнее</a>
-            </div>
-            {% endfor %}
-        </section>
-        <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; Первая</a>
-            <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
-        {% endif %}
-
-        <span class="current">
-            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
-        </span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
-        {% endif %}
+    <div class="centered-title">
+        <h2>Лучшие предложения месяца</h2>
+        <p>Найдите свой новый дом или квартиру по доступной цене.</p>
+    </div>
+    <span class="current">
+        <form method="GET" action="{% url 'sorted_building' %}">
+        <label for="category">Сортировать</label>
+        <select name="category" id="category">
+            <option value="">Все</option>
+            <option value="2">Дом</option>
+            <option value="1">Квартира</option>
+            <option value="3">Гараж</option>
+            <option value="4">Коммерческая недвижимость</option>
+            <option value="5">Нежилая недвижимость</option>
+        </select>
+        <button type="submit">Применить</button>
+        </form>
     </span>
-</div>
-    </main>
+    <section class="properties">
+        {% for building in page_obj %}
+        <div class="property">
+            <img src="{{ building.image_path }}" alt="{{ building.title }}">
+            <h3>{{ building.title }}</h3>
+            {% if user.is_authenticated %}
+                <p>{{ building.price }} $</p>
+            {% else %}
+                <p>Цену могут видеть только авторизованные пользователи</p>
+            {% endif %}
+            <a href="{% url 'building' building.id %}" class="btn">Подробнее</a>
+        </div>
+        {% endfor %}
+    </section>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; Первая</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+            {% endif %}
+
+            <span class="current">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</main>
     <footer>
         <div class="container">
             <p>&copy; 2024 Недвижимость. Все права защищены.</p>

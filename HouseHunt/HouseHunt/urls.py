@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from catalog.views import index, building, create_building, my_catalog, delete, change_data
+from catalog.views import index, building, create_building, my_catalog, delete, change_data, sorted_building
 from django.conf import settings
 from django.conf.urls.static import static
 from user.views import register, login_view, logout_view
@@ -34,6 +34,7 @@ urlpatterns = [
     path('my_catalog/<int:id>', my_catalog, name='my_catalog'),
     path('delete/<int:id>', delete, name='delete'),
     path('change_data/<int:id>', change_data, name='change_data'),
+    path('sorted_building/', sorted_building, name='sorted_building'),
 ]
 
 if settings.DEBUG:

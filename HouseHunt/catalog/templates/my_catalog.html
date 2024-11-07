@@ -35,7 +35,21 @@
     </div>
 </div>
     </div>
-
+<span class="current">
+        <form method="GET" action="{% url 'sorted_building' %}">
+        <label for="category">Сортировать</label>
+        <select name="category" id="category">
+            <option value="">Все</option>
+            <option value="2">Дом</option>
+            <option value="1">Квартира</option>
+            <option value="3">Гараж</option>
+            <option value="4">Коммерческая недвижимость</option>
+            <option value="5">Нежилая недвижимость</option>
+        </select>
+        <button type="submit">Применить</button>
+        </form>
+    </span>
+{% block content %}
     <section class="properties">
             {% if not buildings %}
             <h1>У вас пока нет своих объектов</h1>
@@ -61,6 +75,7 @@
             </div>
             {% endfor %}
         </section>
+{% endblock %}
 <footer id="contact">
     <div class="container">
         <p>&copy; 2024 Продажа недвижимости. Все права защищены.</p>

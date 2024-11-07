@@ -1,0 +1,42 @@
+{% extends 'my_catalog.html' %}
+{% block content %}
+<main>
+    <section class="properties">
+    {% if page_obj %}
+        {% for building in page_obj %}
+            <div class="property">
+                <img src="{{ building.image_path.url }}" alt="{{ building.title }}">
+                <h3>{{ building.title }}</h3>
+                {% if user.is_authenticated %}
+                    <p>{{ building.price }} $</p>
+                {% else %}
+                    <p>Цену могут видеть только авторизованные пользователи</p>
+                {% endif %}
+                <a href="{% url 'building' building.id %}" class="btn">Подробнее</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="property">
+            <h3>Нет объектов с заданным фильтром</h3>
+        </div>
+    {% endif %}
+</section>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; Первая</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+            {% endif %}
+
+            <span class="current">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</main>
+{% endblock %}

@@ -61,3 +61,14 @@ def change_data(request, id):
             form = BuildingForm(instance=building)
         return render(request, 'change_data.html', {'form': form, 'building': building})
     return render(request, '403.html')
+
+def sorted_building(request):
+    type_of_building = request.GET.get('category')
+    if type_of_building:
+        buildings = Building.objects.filter(type_of_building=type_of_building)
+        paginator = Paginator(buildings, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'sorted_building.html', {'page_obj': page_obj})
+    else:
+        return redirect('index')
