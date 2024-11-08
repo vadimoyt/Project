@@ -37,7 +37,7 @@
     </div>
 <span class="current">
         <form method="GET" action="{% url 'sorted_building' %}">
-        <label for="category">Сортировать</label>
+        <label for="category">Сортировать по типу</label>
         <select name="category" id="category">
             <option value="">Все</option>
             <option value="2">Дом</option>
@@ -45,6 +45,15 @@
             <option value="3">Гараж</option>
             <option value="4">Коммерческая недвижимость</option>
             <option value="5">Нежилая недвижимость</option>
+        </select>
+        <label for="square">Сортировать по площади</label>
+        <select name="square" id="square">
+            <option value="">Все</option>
+            <option value="10-50">10-50</option>
+            <option value="50-100">50-100</option>
+            <option value="100-150">100-150</option>
+            <option value="150-200">150-200</option>
+            <option value="200-250">200-250</option>
         </select>
         <button type="submit">Применить</button>
         </form>

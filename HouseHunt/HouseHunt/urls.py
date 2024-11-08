@@ -34,7 +34,7 @@ urlpatterns = [
     path('my_catalog/<int:id>', my_catalog, name='my_catalog'),
     path('delete/<int:id>', delete, name='delete'),
     path('change_data/<int:id>', change_data, name='change_data'),
-    path('sorted_building/', sorted_building, name='sorted_building'),
+    path('sorted_building/', sorted_building, name='sorted_building')
 ]
 
 if settings.DEBUG:
