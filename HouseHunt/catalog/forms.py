@@ -16,7 +16,9 @@ class BuildingForm(forms.ModelForm):
     title = forms.CharField(max_length=30, required=True, label='Название')
     type_of_building = forms.ModelChoiceField(label='Тип недвижимости', queryset=TypeOfBuilding.objects.all())
     price = forms.FloatField(validators=[MinValueValidator(0)], required=True, label='Цена')
-    year_of_construction = forms.IntegerField(validators=[MinValueValidator(1900), MaxValueValidator(2024)], required=True, label='Год постройки')
+    year_of_construction = forms.IntegerField(
+        validators=[MinValueValidator(1900), MaxValueValidator(2024)],
+        required=True, label='Год постройки')
     square = forms.IntegerField(validators=[MinValueValidator(0)], required=True, label='Площадь')
     description = forms.CharField(max_length=250, required=True, label='Описание')
     image_path = forms.ImageField(required=True, label='Фото')

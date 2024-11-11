@@ -1,10 +1,7 @@
 from django.contrib import admin
-from django.template.defaultfilters import title
 
-from .models import Building, TypeOfBuilding
+from .models import Building
 
-
-# Register your models here.
 
 def capitalize_title(self, request, queryset):
     for building in queryset:
@@ -14,7 +11,10 @@ def capitalize_title(self, request, queryset):
 capitalize_title.short_description = 'Написать название с заглавной буквы'
 
 class BuildingAdmin(admin.ModelAdmin):
-    list_display = ('title', 'type_of_building', 'display_square', 'display_price', 'display_year_of_construction', 'price_for_m')
+    list_display = (
+        'title', 'type_of_building', 'display_square', 'display_price',
+        'display_year_of_construction', 'price_for_m'
+    )
     ordering = ('year_of_construction',)
     list_filter = ('type_of_building',)
     search_fields = ('title', 'type_of_building__type_of_building')
@@ -23,6 +23,7 @@ class BuildingAdmin(admin.ModelAdmin):
         ('Дополнительня информация', {'fields': ('description', 'type_of_building', 'user_id')}),
     )
     actions = [capitalize_title]
+
     def display_square(self, obj):
         return obj.square
     display_square.short_description = 'Площадь'

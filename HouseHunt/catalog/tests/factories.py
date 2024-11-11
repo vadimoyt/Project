@@ -1,9 +1,8 @@
-from factory import fuzzy
 import factory
+from factory import fuzzy
+
 from user.tests.factories import UserFactory
-
 from ..models import Building, TypeOfBuilding
-
 
 
 class BuildingFactory(factory.django.DjangoModelFactory):
