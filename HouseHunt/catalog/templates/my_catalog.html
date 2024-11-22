@@ -69,10 +69,10 @@
     </span>
 {% block content %}
     <section class="properties">
-            {% if not buildings %}
+            {% if not user_buildings %}
             <h1>У вас пока нет своих объектов</h1>
             {% endif %}
-            {% for building in buildings %}
+            {% for building in user_buildings %}
             <div class="property">
                 <img src='{{ building.image_path.url }}' alt="{{ building.title }}">
                 <h3>{{ building.title }}</h3>

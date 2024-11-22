@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from catalog.views import index, building, create_building, my_catalog, delete, change_data, sorted_building
+from catalog.views import BuildingDetail, CreateBuilding, ListOfMyBuilding, DeleteMyObject, UpdateMyBuilding, sorted_building, BuildingList
 from django.conf import settings
 from django.conf.urls.static import static
 from user.views import register, login_view, logout_view
@@ -25,15 +25,15 @@ from user.views import register, login_view, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name='index'),
-    path('building/<int:id>', building, name='building'),
+    path('', BuildingList.as_view(), name='index'),
+    path('building/<int:pk>', BuildingDetail.as_view(), name='building'),
     path('register/', register, name='register'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
-    path('creation/', create_building, name='creation'),
-    path('my_catalog/<int:id>', my_catalog, name='my_catalog'),
-    path('delete/<int:id>', delete, name='delete'),
-    path('change_data/<int:id>', change_data, name='change_data'),
+    path('creation/', CreateBuilding.as_view(), name='creation'),
+    path('my_catalog/<int:pk>', ListOfMyBuilding.as_view(), name='my_catalog'),
+    path('delete/<int:pk>', DeleteMyObject.as_view(), name='delete'),
+    path('change_data/<int:pk>', UpdateMyBuilding.as_view(), name='change_data'),
     path('sorted_building/', sorted_building, name='sorted_building')
 ]
 
