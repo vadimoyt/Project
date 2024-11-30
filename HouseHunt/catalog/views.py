@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
@@ -26,9 +27,17 @@ class CreateBuilding(LoginRequiredMixin, CreateView):
     template_name = 'creation.html'
     form_class = BuildingForm
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.role == 'owner':
+            return HttpResponseForbidden('You have no permissions')
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         form.instance.user_id = self.request.user
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        return self.render_to_response({'form':form})
 
     def get_success_url(self):
         return reverse_lazy('building', kwargs={'pk': self.object.pk})
@@ -37,13 +46,17 @@ class CreateBuilding(LoginRequiredMixin, CreateView):
 class ListOfMyBuilding(ListView):
     model = Building
     template_name = 'my_catalog.html'
-    paginate_by = 10
+    paginate_by = 2
+    context_object_name = 'user_buildings'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.role == 'owner':
+            return HttpResponseForbidden('You have no permissions')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
         user = self.request.user
-        context['user_buildings'] = Building.objects.filter(user_id=user)
-        return context
+        return Building.objects.filter(user_id=user)
 
 
 class DeleteMyObject(DeleteView):
@@ -51,8 +64,13 @@ class DeleteMyObject(DeleteView):
     template_name = 'my_catalog.html'
     context_object_name = 'building'
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or self.request.user.role != 'owner':
+            return HttpResponseForbidden('You have no permissions')
+        return super().dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
-        return reverse_lazy('my_catalog', kwargs={'pk':self.object.pk})
+        return reverse_lazy('my_catalog', kwargs={'pk':self.request.user.id})
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
@@ -66,8 +84,13 @@ class UpdateMyBuilding(UpdateView):
     form_class = BuildingForm
     template_name = 'change_data.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.role == 'owner':
+            return HttpResponseForbidden('You have no permissions')
+        return super().dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
-        return reverse_lazy('my_catalog', kwargs={'pk':self.object.pk})
+        return reverse_lazy('my_catalog', kwargs={'pk':self.request.user.id})
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
@@ -81,7 +104,7 @@ def sorted_building(request):
     square = request.GET.get('square')
     year = request.GET.get('year')
     buildings = Building.objects.all()
-    if not type_of_building and not square:
+    if not type_of_building and not square and not year:
         return redirect('index')
     if type_of_building:
         buildings = buildings.filter(type_of_building=type_of_building)
